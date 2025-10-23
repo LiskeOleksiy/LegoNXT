@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Галерея проектів Lego NXT</title>
+  <style>
+    :root { --thumb-size:400px; --gap:16px; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      line-height: 1.4;
+      margin: 20px;
+      color: #111;
+      background: #e0e0e0;
+    }
+    h1 {
+      margin: 0 0 12px;
+      text-align: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(var(--thumb-size), 1fr));
+      gap: var(--gap);
+      justify-content: center;
+    }
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .thumb {
+      width: var(--thumb-size);
+      height: var(--thumb-size);
+      overflow: hidden;
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .caption {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      word-break: break-word;
+      color: #0073e6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lego NXT</h1>
+  <div id="gallery" class="grid"></div>
+  <script>
+    const projects = [
+      { name: '1-button_remote', preview: 'DCP_6642.jpg' },
+      { name: '2-touch_remote', preview: 'DCP_2665.JPG' },
+      { name: '3-motor_chassis', preview: 'DCP_6967.jpg' },
+      { name: '4x4_3button', preview: 'DCP_2711.JPG' },
+      { name: '4x4_bumper_car', preview: 'DCP_3043.jpg' },
+      { name: '4x4_chassis', preview: 'DCP_2680.jpg' },
+      { name: '4x4_joystick', preview: 'DCP_2670.JPG' },
+      { name: '5-button_remote', preview: 'DCP_3235.JPG' },
+      { name: 'alfa_rex', preview: '0000.JPG', pdf: true },
+      { name: 'ball_coaster', preview: 'DCP_8103.jpg' },
+      { name: 'ball_hunter', preview: 'DCP_5755.jpg' },
+      { name: 'ball_shooter', preview: 'DCP_3336.JPG' },
+      { name: 'ballerina', preview: 'DCP_5528.JPG' },
+      { name: 'baseball_batter', preview: 'DCP_4240.jpg' },
+      { name: 'baseball_game', preview: 'DCP_3288.JPG' },
+      { name: 'belt-driven_Colour_Sorter', preview: '0000.JPG', pdf: true },
+      { name: 'birthday_cake', preview: 'DCP_8831.JPG' },
+      { name: 'bumper_car', preview: 'DCP_3151.JPG' },
+      { name: 'castor_bot', preview: 'DCP_3166.JPG' },
+      { name: 'catapult', preview: 'DCP_2950.JPG' },
+      { name: 'classic_Clock', preview: '0000.JPG', pdf: true },
+      { name: 'claw_car', preview: 'DCP_3697.JPG' },
+      { name: 'claw_striker', preview: 'DCP_9516.JPG' },
+      { name: 'color_sorter', preview: '0000.JPG', pdf: true },
+      { name: 'dial_remote', preview: 'DCP_9270.JPG' },
+      { name: 'dog_sled', preview: 'DCP_5841.JPG' },
+      { name: 'dolphin', preview: 'DCP_8920.JPG' },
+      { name: 'door_alarm', preview: 'DCP_2817.JPG' },
+      { name: 'dragster', preview: 'DCP_2767.JPG' },
+      { name: 'echo_telegraph', preview: 'DCP_8758.JPG' },
+      { name: 'explorer', preview: 'DCP_3136.JPG' },
+      { name: 'fake_GPS', preview: 'DCP_5753-1.JPG' },
+      { name: 'five_minute_bot', preview: 'DCP_8898.JPG' },
+      { name: 'forklift', preview: 'DCP_9252.JPG' },
+      { name: 'game_control_car', preview: 'DCP_3645.JPG' },
+      { name: 'generator_car', preview: 'DCP_5623.JPG' },
+      { name: 'grand_Four_Belt_Rover', preview: '0000.JPG', pdf: true },
+      { name: 'guitar', preview: 'DCP_3026.JPG' },
+      { name: 'guitar_game', preview: 'DCP_0433.JPG' },
+      { name: 'gymnast', preview: 'DCP_4541.JPG' },
+      { name: 'hammer_car', preview: 'DCP_6972.JPG' },
+      { name: 'humanoid', preview: '0000.JPG', pdf: true },
+      { name: 'inch_worm', preview: 'DCP_2837.JPG' },
+      { name: 'intelligent_Car', preview: '0000.JPG', pdf: true },
+      { name: 'kicker', preview: 'DCP_7569.JPG' },
+      { name: 'lawn_mower', preview: 'DCP_4383.JPG' },
+      { name: 'light_meter', preview: 'DCP_3077.JPG' },
+      { name: 'line_follower', preview: 'DCP_2910.JPG' },
+      { name: 'lock_box', preview: 'DCP_2696.JPG' },
+      { name: 'machine_gun', preview: 'DCP_3258.JPG' },
+      { name: 'mini_golf', preview: 'DCP_2352.JPG' },
+      { name: 'mini_rover', preview: 'DCP_9283.JPG' },
+      { name: 'mini_sumo', preview: 'DCP_6001.JPG' },
+      { name: 'mouse_trap', preview: 'DCP_8777.JPG' },
+      { name: 'MTV', preview: 'DCP_6043.JPG' },
+      { name: 'multi-bot', preview: 'DCP_3519.JPG' },
+      { name: 'mystery', preview: 'DCP_4656.JPG' },
+      { name: 'path_measurer', preview: 'DCP_2686.JPG' },
+      { name: 'peg_sorter', preview: 'DCP_8990.JPG' },
+      { name: 'pinball_machine', preview: 'DCP_9956.JPG' },
+      { name: 'pitcher_and_batter', preview: 'DCP_4265.JPG' },
+      { name: 'power_saw', preview: 'DCP_5788.JPG' },
+      { name: 'puppy', preview: 'DCP_4730.JPG' },
+      { name: 'race_car', preview: 'DCP_0081.JPG' },
+      { name: 'radar', preview: 'DCP_2414.JPG' },
+      { name: 'rattlesnake', preview: 'DCP_3253.JPG' },
+      { name: 'robogator', preview: '0000.JPG', pdf: true },
+      { name: 'robot_arm', preview: 'DCP_4304.JPG' },
+      { name: 'robot_arm_2', preview: '0000.JPG', pdf: true },
+      { name: 'santa', preview: 'DCP_3874.JPG' },
+      { name: 'scorpion', preview: '0000.JPG', pdf: true },
+      { name: 'scribble', preview: 'DCP_2732.JPG' },
+      { name: 'segway', preview: 'DCP_3149.JPG' },
+      { name: 'sensor_meter', preview: 'DCP_5108.JPG' },
+      { name: 'snowmobile_race', preview: 'DCP_4845.JPG' },
+      { name: 'sound_meter', preview: 'DCP_2755.JPG' },
+      { name: 'soundbot', preview: '0000.JPG', pdf: true },
+      { name: 'spider', preview: 'DCP_7536.JPG' },
+      { name: 'spin_art', preview: 'DCP_3616.JPG' },
+      { name: 'spinner_bot', preview: 'DCP_5907.JPG' },
+      { name: 'steering_remote', preview: 'DCP_3245.JPG' },
+      { name: 'steering_rover', preview: 'DCP_0540.JPG' },
+      { name: 'top_spinner', preview: 'DCP_1961.JPG' },
+      { name: 'trailer_pull', preview: 'DCP_9947.JPG' },
+      { name: 'transmission', preview: 'DCP_4988.JPG' },
+      { name: 'tribot', preview: '0000.JPG', pdf: true },
+      { name: 'vending_machine', preview: 'DCP_2415.JPG' },
+      { name: 'voice_car', preview: 'DCP_3625.JPG' },
+      { name: 'volume_calc', preview: 'DCP_9461.JPG' },
+      { name: 'whack-a-brick', preview: 'DCP_2908.JPG' }
+    ];
+
+    function createCard(project) {
+      const link = document.createElement('a');
+      link.href = project.pdf
+        ? `./${project.name}/${project.name}.pdf`
+        : `./${project.name}/index.html`;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.className = 'card';
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+
+      const img = document.createElement('img');
+      img.src = `./${project.name}/${project.preview}`;
+      img.alt = project.name;
+      img.loading = 'lazy';
+      thumb.appendChild(img);
+
+      const caption = document.createElement('div');
+      caption.className = 'caption';
+      caption.textContent = project.name;
+
+      link.appendChild(thumb);
+      link.appendChild(caption);
+
+      return link;
+    }
+
+    const gallery = document.getElementById('gallery');
+    projects.forEach(p => gallery.appendChild(createCard(p)));
+  </script>
+</body>
+</html>
